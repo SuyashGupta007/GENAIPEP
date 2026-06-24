@@ -1,0 +1,83 @@
+# Environment variables
+
+.env
+.env.*
+!.env.example
+
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+
+venv/
+.venv/
+env/
+ENV/
+
+# Distribution / packaging
+
+build/
+dist/
+*.egg-info/
+
+# Logs
+
+*.log
+
+# IDEs
+
+.vscode/
+.idea/
+
+# Jupyter Notebooks
+
+.ipynb_checkpoints/
+
+# Testing
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking / linting
+
+.mypy_cache/
+.ruff_cache/
+
+# LangChain / Vector Databases
+
+.faiss/
+faiss_index/
+chroma_db/
+chromadb/
+vectorstore/
+vectorstores/
+
+# Databases
+
+*.db
+*.sqlite3
+
+# Temporary files
+
+tmp/
+temp/
+.cache/
+
+# Uploads & generated data
+
+uploads/
+data/
+
+# Secrets
+
+secrets.json
+credentials.json
+
+# OS files
+
+.DS_Store
+Thumbs.db

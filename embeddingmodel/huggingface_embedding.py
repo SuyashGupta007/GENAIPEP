@@ -8,4 +8,6 @@ embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-
 texts = ["Hello i am Suyash Gupta", "Hi i am teaching GenAI", "All are great students"]
 
 vector = embeddings.embed_documents(texts)
-print(vector)
+# print(vector)
+# print(len(vector))
+print(vector[0])

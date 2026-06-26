@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-
 load_dotenv()
 
 import streamlit as st
@@ -9,11 +8,8 @@ from langchain_mistralai import ChatMistralAI
 
 # ── Model & prompt (identical to original) ─────────────────────────────────────
 model = ChatMistralAI(model="mistral-small-2603")
-prompt = ChatPromptTemplate.from_messages(
-    [
-        (
-            "system",
-            """
+prompt = ChatPromptTemplate.from_messages([
+    ("system", """
 You are MovieSage AI, an expert movie analyst and information extraction assistant.
     Your responsibilities:
     1. Carefully read and understand the entire movie description.
@@ -29,20 +25,14 @@ You are MovieSage AI, an expert movie analyst and information extraction assista
     - title, genre, director, writers, producers, cast, release_year, runtime
     - language, country, plot_summary, main_characters, themes
     - notable_facts, awards, box_office, rating, keywords
-    """,
-        ),
-        (
-            "human",
-            "Analyze the following movie description and extract all relevant information.\n\nMovie Description:\n{movie_description}",
-        ),
-    ]
-)
+    """),
+    ("human", "Analyze the following movie description and extract all relevant information.\n\nMovie Description:\n{movie_description}"),
+])
 
 # ── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(page_title="MovieSage AI", page_icon="🎬", layout="wide")
 
-st.markdown(
-    """
+st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -372,72 +362,47 @@ div[data-testid="stVerticalBlock"] .stButton > button:hover {
 
 <div class="bg-mesh"></div>
 <div class="scan-sweep"></div>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
 # ── Session state ──────────────────────────────────────────────────────────────
-if "result" not in st.session_state:
-    st.session_state.result = None
-if "raw_json" not in st.session_state:
-    st.session_state.raw_json = ""
-
+if "result"   not in st.session_state: st.session_state.result   = None
+if "raw_json" not in st.session_state: st.session_state.raw_json = ""
 
 def v(d, k, fallback="—"):
     val = d.get(k)
-    if val is None or val == "" or val == []:
-        return fallback
+    if val is None or val == "" or val == []: return fallback
     return val
 
-
 def chips(items, style=""):
-    if not isinstance(items, list):
-        items = [items] if items and items != "—" else []
-    if not items:
-        return "<span style='color:#1e2a3a;font-size:10px'>—</span>"
+    if not isinstance(items, list): items = [items] if items and items != "—" else []
+    if not items: return "<span style='color:#1e2a3a;font-size:10px'>—</span>"
     return "".join(f'<span class="chip {style}">{i}</span>' for i in items)
 
-
 def list_rows(items, bullet_class=""):
-    if not isinstance(items, list):
-        items = [items] if items and items != "—" else []
-    if not items:
-        return "<span style='color:#1e2a3a;font-size:10px'>—</span>"
-    return "".join(
-        f'<div class="list-item"><span class="list-bullet {bullet_class}">▸</span>{i}</div>'
-        for i in items
-    )
-
+    if not isinstance(items, list): items = [items] if items and items != "—" else []
+    if not items: return "<span style='color:#1e2a3a;font-size:10px'>—</span>"
+    return "".join(f'<div class="list-item"><span class="list-bullet {bullet_class}">▸</span>{i}</div>' for i in items)
 
 # ── HERO ──────────────────────────────────────────────────────────────────────
 st.markdown('<div class="main-wrap">', unsafe_allow_html=True)
-st.markdown(
-    """
+st.markdown("""
 <div class="hero">
     <div class="hero-eyebrow">◈ intelligent movie data extraction</div>
     <div class="glitch-title">Movie<span class="accent">Sage</span></div>
     <div class="hero-sub">// paste a paragraph → receive structured intelligence //</div>
 </div>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
 # Nav bar
-st.markdown(
-    """
+st.markdown("""
 <div class="nav-bar">
     <div class="nav-left"><span class="nav-dot"></span>SYSTEM READY</div>
     <div class="nav-right">MODEL <span>mistral-small-2603</span></div>
 </div>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
 # ── INPUT CARD ────────────────────────────────────────────────────────────────
-st.markdown(
-    '<div class="input-card"><div class="input-label">⬡ movie description input</div>',
-    unsafe_allow_html=True,
-)
+st.markdown('<div class="input-card"><div class="input-label">⬡ movie description input</div>', unsafe_allow_html=True)
 
 description = st.text_area(
     label="movie_input",
@@ -450,7 +415,7 @@ col_a, col_b, col_c = st.columns([1, 2, 1])
 with col_b:
     run = st.button("◈  DECODE MOVIE", use_container_width=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ── RUN MODEL ─────────────────────────────────────────────────────────────────
 if run:
@@ -458,17 +423,15 @@ if run:
         st.warning("Paste a movie description first.")
     else:
         with st.spinner("DECODING SIGNAL ···"):
-            fp = prompt.invoke({"movie_description": description})
+            fp  = prompt.invoke({"movie_description": description})
             res = model.invoke(fp)
             raw = re.sub(r"^```(?:json)?\s*", "", res.content.strip())
             raw = re.sub(r"\s*```$", "", raw).strip()
             try:
-                st.session_state.result = json.loads(raw)
-                st.session_state.raw_json = json.dumps(
-                    st.session_state.result, indent=2
-                )
+                st.session_state.result   = json.loads(raw)
+                st.session_state.raw_json = json.dumps(st.session_state.result, indent=2)
             except json.JSONDecodeError:
-                st.session_state.result = None
+                st.session_state.result   = None
                 st.session_state.raw_json = raw
                 st.error("Parse error — raw output shown below.")
                 st.code(raw)
@@ -477,53 +440,43 @@ if run:
 data = st.session_state.result
 
 if data is None and not st.session_state.raw_json:
-    st.markdown(
-        """
+    st.markdown("""
     <div class="empty-state">
         <div class="empty-icon">⬡</div>
         <div class="empty-text">awaiting signal input<br>paste a movie description above to begin decoding</div>
     </div>
-    """,
-        unsafe_allow_html=True,
-    )
+    """, unsafe_allow_html=True)
 
 elif data:
-    title = v(data, "title", "UNKNOWN TITLE")
-    year = v(data, "release_year")
-    runtime = v(data, "runtime")
+    title    = v(data, "title",        "UNKNOWN TITLE")
+    year     = v(data, "release_year")
+    runtime  = v(data, "runtime")
     language = v(data, "language")
-    country = v(data, "country")
-    rating = v(data, "rating")
-    genre = v(data, "genre", [])
-    plot = v(data, "plot_summary")
+    country  = v(data, "country")
+    rating   = v(data, "rating")
+    genre    = v(data, "genre", [])
+    plot     = v(data, "plot_summary")
     director = v(data, "director")
-    writers = v(data, "writers", [])
-    producers = v(data, "producers", [])
-    cast = v(data, "cast", [])
-    chars = v(data, "main_characters", [])
-    themes = v(data, "themes", [])
-    keywords = v(data, "keywords", [])
-    awards = v(data, "awards", [])
-    facts = v(data, "notable_facts", [])
-    box_off = v(data, "box_office")
+    writers  = v(data, "writers",        [])
+    producers= v(data, "producers",      [])
+    cast     = v(data, "cast",           [])
+    chars    = v(data, "main_characters",[])
+    themes   = v(data, "themes",         [])
+    keywords = v(data, "keywords",       [])
+    awards   = v(data, "awards",         [])
+    facts    = v(data, "notable_facts",  [])
+    box_off  = v(data, "box_office")
 
     genre_list = genre if isinstance(genre, list) else ([genre] if genre != "—" else [])
 
     # ── Title card ──
-    genre_pills = "".join(
-        f'<span class="meta-tag purple">{g}</span>' for g in genre_list
-    )
-    year_pill = f'<span class="meta-tag">📅 {year}</span>' if year != "—" else ""
-    rt_pill = f'<span class="meta-tag">⏱ {runtime}</span>' if runtime != "—" else ""
-    lang_pill = (
-        f'<span class="meta-tag pink">🌐 {language}</span>' if language != "—" else ""
-    )
-    rating_pill = (
-        f'<span class="meta-tag pink">⭐ {rating}</span>' if rating != "—" else ""
-    )
+    genre_pills = "".join(f'<span class="meta-tag purple">{g}</span>' for g in genre_list)
+    year_pill   = f'<span class="meta-tag">📅 {year}</span>'          if year    != "—" else ""
+    rt_pill     = f'<span class="meta-tag">⏱ {runtime}</span>'        if runtime != "—" else ""
+    lang_pill   = f'<span class="meta-tag pink">🌐 {language}</span>'  if language!= "—" else ""
+    rating_pill = f'<span class="meta-tag pink">⭐ {rating}</span>'    if rating  != "—" else ""
 
-    st.markdown(
-        f"""
+    st.markdown(f"""
     <div class="result-title-card">
         <div class="decoded-label">⬡ decoded · movie intelligence</div>
         <div class="result-movie-title">{title}</div>
@@ -531,25 +484,19 @@ elif data:
             {year_pill}{rt_pill}{lang_pill}{rating_pill}{genre_pills}
         </div>
     </div>
-    """,
-        unsafe_allow_html=True,
-    )
+    """, unsafe_allow_html=True)
 
     # ── Plot ──
     if plot != "—":
-        st.markdown(
-            f"""
+        st.markdown(f"""
         <div class="plot-block">
             <div class="plot-hd">plot summary</div>
             <div class="plot-body">{plot}</div>
         </div>
-        """,
-            unsafe_allow_html=True,
-        )
+        """, unsafe_allow_html=True)
 
     # ── Row 1: Director + Box Office ──
-    st.markdown(
-        f"""
+    st.markdown(f"""
     <div class="data-grid">
         <div class="dcell">
             <div class="dcell-label">Director</div>
@@ -560,13 +507,10 @@ elif data:
             <div class="dcell-value"><strong>{box_off}</strong></div>
         </div>
     </div>
-    """,
-        unsafe_allow_html=True,
-    )
+    """, unsafe_allow_html=True)
 
     # ── Row 2: Writers + Producers ──
-    st.markdown(
-        f"""
+    st.markdown(f"""
     <div class="data-grid">
         <div class="dcell">
             <div class="dcell-label">Writers</div>
@@ -577,36 +521,27 @@ elif data:
             <div class="chip-cloud">{chips(producers, "v")}</div>
         </div>
     </div>
-    """,
-        unsafe_allow_html=True,
-    )
+    """, unsafe_allow_html=True)
 
     # ── Cast (full width) ──
-    st.markdown(
-        f"""
+    st.markdown(f"""
     <div class="dcell" style="margin-bottom:1rem">
         <div class="dcell-label">Cast</div>
         <div class="chip-cloud">{chips(cast, "c")}</div>
     </div>
-    """,
-        unsafe_allow_html=True,
-    )
+    """, unsafe_allow_html=True)
 
     # ── Main characters ──
     if isinstance(chars, list) and chars:
-        st.markdown(
-            f"""
+        st.markdown(f"""
         <div class="dcell pink-top" style="margin-bottom:1rem">
             <div class="dcell-label">Main Characters</div>
             <div class="chip-cloud">{chips(chars, "p")}</div>
         </div>
-        """,
-            unsafe_allow_html=True,
-        )
+        """, unsafe_allow_html=True)
 
     # ── Themes + Keywords ──
-    st.markdown(
-        f"""
+    st.markdown(f"""
     <div class="data-grid">
         <div class="dcell purple-top">
             <div class="dcell-label">Themes</div>
@@ -617,18 +552,13 @@ elif data:
             <div class="chip-cloud">{chips(keywords)}</div>
         </div>
     </div>
-    """,
-        unsafe_allow_html=True,
-    )
+    """, unsafe_allow_html=True)
 
     # ── Awards + Notable facts ──
-    awards_list = (
-        awards if isinstance(awards, list) else ([awards] if awards != "—" else [])
-    )
-    facts_list = facts if isinstance(facts, list) else ([facts] if facts != "—" else [])
+    awards_list = awards if isinstance(awards, list) else ([awards] if awards != "—" else [])
+    facts_list  = facts  if isinstance(facts,  list) else ([facts]  if facts  != "—" else [])
 
-    st.markdown(
-        f"""
+    st.markdown(f"""
     <div class="data-grid">
         <div class="dcell pink-top">
             <div class="dcell-label">Awards</div>
@@ -639,15 +569,10 @@ elif data:
             {list_rows(facts_list)}
         </div>
     </div>
-    """,
-        unsafe_allow_html=True,
-    )
+    """, unsafe_allow_html=True)
 
     # ── Raw JSON ──
     with st.expander("◈  RAW JSON OUTPUT"):
-        st.markdown(
-            f'<div class="json-pre">{st.session_state.raw_json}</div>',
-            unsafe_allow_html=True,
-        )
+        st.markdown(f'<div class="json-pre">{st.session_state.raw_json}</div>', unsafe_allow_html=True)
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)

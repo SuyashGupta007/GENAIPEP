@@ -1,0 +1,902 @@
+# GENERATIVE AI MASTER NOTES
+
+---
+
+# Chapter 1: What is Generative AI?
+
+Generative AI (GenAI) is a branch of Artificial Intelligence that creates new content rather than simply classifying or predicting.
+
+Traditional AI answers:
+
+```text
+Input Image → Cat or Dog?
+```
+
+Generative AI answers:
+
+```text
+Generate a new image of a dog wearing sunglasses.
+```
+
+Examples:
+
+* Text Generation (ChatGPT)
+* Image Generation (DALL-E)
+* Video Generation (Sora)
+* Music Generation
+* Code Generation
+* Synthetic Data Generation
+
+---
+
+# Evolution of AI
+
+```text
+Artificial Intelligence
+        |
+Machine Learning
+        |
+Deep Learning
+        |
+Generative AI
+```
+
+---
+
+# Artificial Intelligence
+
+AI refers to systems capable of performing tasks that normally require human intelligence.
+
+Examples:
+
+* Face Recognition
+* Recommendation Systems
+* Chess Playing
+* Fraud Detection
+
+---
+
+# Machine Learning
+
+Machine Learning enables systems to learn patterns from data.
+
+Instead of:
+
+```python
+if age > 18:
+    approve()
+```
+
+The model learns:
+
+```text
+Input Data
+      ↓
+Learning
+      ↓
+Prediction
+```
+
+Types:
+
+## Supervised Learning
+
+Uses labeled data.
+
+Example:
+
+```text
+Email → Spam
+Email → Not Spam
+```
+
+Algorithms:
+
+* Linear Regression
+* Logistic Regression
+* Random Forest
+* XGBoost
+
+---
+
+## Unsupervised Learning
+
+No labels.
+
+Example:
+
+```text
+Customer Segmentation
+```
+
+Algorithms:
+
+* K-Means
+* DBSCAN
+* PCA
+
+---
+
+## Reinforcement Learning
+
+Learning through rewards.
+
+Example:
+
+```text
+Game Playing
+Robotics
+```
+
+---
+
+# Deep Learning
+
+Deep Learning uses neural networks.
+
+Example:
+
+```text
+Input
+  ↓
+Hidden Layer
+  ↓
+Hidden Layer
+  ↓
+Output
+```
+
+---
+
+# Why Deep Learning Won
+
+Three factors:
+
+1. Massive Data
+2. Powerful GPUs
+3. Better Algorithms
+
+---
+
+# Neural Networks
+
+Inspired by biological neurons.
+
+Neuron:
+
+```text
+Inputs
+   ↓
+Weighted Sum
+   ↓
+Activation Function
+   ↓
+Output
+```
+
+Formula:
+
+```text
+y = f(wx + b)
+```
+
+where:
+
+```text
+w = weight
+x = input
+b = bias
+f = activation
+```
+
+---
+
+# Activation Functions
+
+## Sigmoid
+
+```text
+0 → 1
+```
+
+Used historically.
+
+---
+
+## Tanh
+
+```text
+-1 → 1
+```
+
+Better than sigmoid.
+
+---
+
+## ReLU
+
+Most common.
+
+```text
+max(0,x)
+```
+
+Advantages:
+
+* Fast
+* Avoids vanishing gradients
+
+---
+
+# Backpropagation
+
+Core learning mechanism.
+
+Process:
+
+```text
+Prediction
+     ↓
+Calculate Error
+     ↓
+Propagate Error Backward
+     ↓
+Update Weights
+```
+
+---
+
+# Gradient Descent
+
+Optimization algorithm.
+
+Formula:
+
+```text
+New Weight
+=
+Old Weight
+-
+Learning Rate × Gradient
+```
+
+---
+
+# Chapter 2: Transformers
+
+Most important concept in modern AI.
+
+Everything today:
+
+* GPT
+* Claude
+* Gemini
+* Llama
+* Mistral
+
+is based on Transformers.
+
+---
+
+# Why RNNs Failed
+
+Before transformers:
+
+```text
+Word1 → Word2 → Word3 → Word4
+```
+
+Problems:
+
+* Slow
+* Long-term memory issues
+* Not parallelizable
+
+---
+
+# Attention Is All You Need
+
+Published in 2017.
+
+Changed AI forever.
+
+Core Idea:
+
+```text
+Every word can look at every other word.
+```
+
+---
+
+# Self Attention
+
+Sentence:
+
+```text
+The animal didn't cross the road because it was tired.
+```
+
+What does "it" refer to?
+
+Transformer learns:
+
+```text
+it → animal
+```
+
+using attention.
+
+---
+
+# Query Key Value
+
+Each token creates:
+
+```text
+Query
+Key
+Value
+```
+
+Attention Formula:
+
+```text
+Attention(Q,K,V)
+=
+softmax(QKᵀ/√d)V
+```
+
+This is arguably the most important equation in modern AI.
+
+---
+
+# Multi Head Attention
+
+Instead of one attention mechanism:
+
+```text
+Head1 → Grammar
+Head2 → Context
+Head3 → Meaning
+Head4 → Relationships
+```
+
+---
+
+# Positional Encoding
+
+Transformers don't know order naturally.
+
+Need:
+
+```text
+Position 1
+Position 2
+Position 3
+```
+
+Positional encoding provides this information.
+
+---
+
+# Chapter 3: Large Language Models
+
+LLM = Large Language Model
+
+Examples:
+
+* GPT-4
+* Claude
+* Gemini
+* Llama
+* Mistral
+
+---
+
+# How LLMs Learn
+
+Not magic.
+
+Simply:
+
+```text
+Predict Next Token
+```
+
+Example:
+
+```text
+The capital of France is ___
+```
+
+Target:
+
+```text
+Paris
+```
+
+Repeat trillions of times.
+
+---
+
+# Training Pipeline
+
+```text
+Internet Data
+      ↓
+Cleaning
+      ↓
+Tokenization
+      ↓
+Training
+      ↓
+Model
+```
+
+---
+
+# Parameters
+
+Parameters = learned weights.
+
+Examples:
+
+```text
+7 Billion
+13 Billion
+70 Billion
+1 Trillion+
+```
+
+More parameters:
+
+```text
+Better capability
+More cost
+```
+
+---
+
+# Context Window
+
+Memory size.
+
+Examples:
+
+```text
+8k tokens
+32k tokens
+128k tokens
+1M+ tokens
+```
+
+---
+
+# Temperature
+
+Controls randomness.
+
+Temperature = 0
+
+```text
+Deterministic
+```
+
+Temperature = 1
+
+```text
+Creative
+```
+
+---
+
+# Hallucinations
+
+Models generate probable text.
+
+Not guaranteed truth.
+
+Example:
+
+```text
+Fake research paper citation
+```
+
+Hallucination.
+
+---
+
+# Chapter 4: Embeddings
+
+Embeddings convert text into vectors.
+
+Example:
+
+```text
+Dog
+```
+
+becomes:
+
+```text
+[0.123, -0.77, 0.92 ...]
+```
+
+---
+
+# Why Embeddings Matter
+
+They capture meaning.
+
+Example:
+
+```text
+Dog
+Puppy
+```
+
+Vectors close together.
+
+```text
+Dog
+Car
+```
+
+Vectors far apart.
+
+---
+
+# Semantic Search
+
+Traditional Search:
+
+```text
+Keyword Match
+```
+
+Semantic Search:
+
+```text
+Meaning Match
+```
+
+Huge difference.
+
+---
+
+# Chapter 5: Vector Databases
+
+Store embeddings.
+
+Examples:
+
+* FAISS
+* Pinecone
+* Chroma
+* Weaviate
+* Milvus
+
+---
+
+# Cosine Similarity
+
+Most common metric.
+
+Formula:
+
+```text
+A·B
+--------
+||A|| ||B||
+```
+
+Range:
+
+```text
+-1 to 1
+```
+
+Closer to 1:
+
+```text
+More Similar
+```
+
+---
+
+# Chapter 6: RAG
+
+Retrieval Augmented Generation
+
+Most important enterprise GenAI concept.
+
+---
+
+# Problem
+
+LLMs don't know your PDFs.
+
+Example:
+
+```text
+Company Handbook.pdf
+```
+
+GPT has never seen it.
+
+---
+
+# Solution
+
+RAG
+
+Pipeline:
+
+```text
+PDF
+ ↓
+Chunking
+ ↓
+Embeddings
+ ↓
+Vector DB
+ ↓
+Retriever
+ ↓
+LLM
+ ↓
+Answer
+```
+
+---
+
+# Chunking
+
+Breaking documents.
+
+Example:
+
+```text
+500 characters
+100 overlap
+```
+
+---
+
+# Retrieval
+
+Find relevant chunks.
+
+Example:
+
+```text
+"What is leave policy?"
+```
+
+Retrieve:
+
+```text
+Leave Policy Section
+```
+
+---
+
+# Why RAG Beats Fine Tuning
+
+Advantages:
+
+```text
+Cheap
+Fast
+Updatable
+No Retraining
+```
+
+---
+
+# Chapter 7: LangChain
+
+Framework for LLM applications.
+
+Components:
+
+```text
+LLM
+Prompt
+Retriever
+Agent
+Memory
+Tools
+```
+
+---
+
+# LangChain RAG
+
+```python
+Loader
+ ↓
+Splitter
+ ↓
+Embeddings
+ ↓
+FAISS
+ ↓
+Retriever
+ ↓
+LLM
+```
+
+---
+
+# Chapter 8: Mistral AI
+
+Popular open-weight model provider.
+
+Models:
+
+```text
+Mistral Small
+Mistral Medium
+Mistral Large
+```
+
+LangChain:
+
+```python
+from langchain_mistralai import ChatMistralAI
+```
+
+---
+
+# Chapter 9: Fine Tuning
+
+Training a pretrained model further.
+
+---
+
+# Full Fine Tuning
+
+Updates:
+
+```text
+All Weights
+```
+
+Expensive.
+
+---
+
+# LoRA
+
+Low Rank Adaptation.
+
+Updates:
+
+```text
+Small Matrices
+```
+
+Advantages:
+
+```text
+Cheaper
+Faster
+Less Memory
+```
+
+---
+
+# QLoRA
+
+LoRA + Quantization.
+
+Even cheaper.
+
+---
+
+# Chapter 10: Agents
+
+Agents = LLM + Tools.
+
+Traditional LLM:
+
+```text
+Question
+ ↓
+Answer
+```
+
+Agent:
+
+```text
+Question
+ ↓
+Reason
+ ↓
+Use Tool
+ ↓
+Observe
+ ↓
+Answer
+```
+
+---
+
+# ReAct Pattern
+
+```text
+Thought
+Action
+Observation
+```
+
+Repeated until solved.
+
+---
+
+# Chapter 11: MCP
+
+Model Context Protocol
+
+Standardized way for models to communicate with tools.
+
+Think:
+
+```text
+USB-C for AI
+```
+
+Benefits:
+
+* Tool Discovery
+* Standard APIs
+* Better Agent Systems
+
+---
+
+# Most Important Research Papers
+
+1. Attention Is All You Need (2017)
+2. BERT (2018)
+3. GPT-3 (2020)
+4. InstructGPT (2022)
+5. RAG (2020)
+6. LoRA (2021)
+7. ReAct (2022)
+
+---
+
+# Most Important Interview Questions
+
+1. What is Self Attention?
+2. Explain Query Key Value.
+3. Why Transformers beat RNNs?
+4. What is Tokenization?
+5. What are Embeddings?
+6. Explain Cosine Similarity.
+7. What is a Vector Database?
+8. What is RAG?
+9. RAG vs Fine Tuning?
+10. What is LoRA?
+11. What is QLoRA?
+12. What is LangChain?
+13. What is an Agent?
+14. What is MCP?
+15. Explain the Transformer architecture end-to-end.
+
+---
+
+# 80/20 Rule for GenAI
+
+If you deeply understand these 5 topics, you understand most GenAI systems:
+
+```text
+1. Transformers
+2. LLM Training
+3. Embeddings
+4. RAG
+5. Agents
+```
+
+Everything else is built on top of these foundations.
